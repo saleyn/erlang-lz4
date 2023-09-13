@@ -1,23 +1,33 @@
 .PHONY: doc
 
+REBAR3 ?= rebar3
+
+ifeq ($(shell which $(REBAR3) 2>/dev/null),)
+  REBAR=./rebar
+  DOC=doc
+else
+  REBAR=rebar3
+  DOC=edoc
+endif
+
 all:
-	./rebar compile
-	./rebar doc
-	./rebar xref
-	./rebar eunit
+	$(REBAR) compile
+	$(REBAR) $(DOC)
+	$(REBAR) xref
+	$(REBAR) eunit
 
 compile:
-	./rebar compile
+	$(REBAR) compile
 
 doc:
-	./rebar doc
+	$(REBAR) doc
 
 xref: compile
-	./rebar xref
+	$(REBAR) xref
 
 clean:
-	./rebar clean
+	$(REBAR) clean
 
 test: xref
-	./rebar eunit
+	$(REBAR) eunit
 
